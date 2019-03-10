@@ -1,58 +1,174 @@
 <template>
-  <div class="hello">
-    <h1>{{ msg }}</h1>
-    <p>
-      For a guide and recipes on how to configure / customize this project,<br>
-      check out the
-      <a href="https://cli.vuejs.org" target="_blank" rel="noopener">vue-cli documentation</a>.
-    </p>
-    <h3>Installed CLI Plugins</h3>
-    <ul>
-      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-babel" target="_blank" rel="noopener">babel</a></li>
-      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-eslint" target="_blank" rel="noopener">eslint</a></li>
-    </ul>
-    <h3>Essential Links</h3>
-    <ul>
-      <li><a href="https://vuejs.org" target="_blank" rel="noopener">Core Docs</a></li>
-      <li><a href="https://forum.vuejs.org" target="_blank" rel="noopener">Forum</a></li>
-      <li><a href="https://chat.vuejs.org" target="_blank" rel="noopener">Community Chat</a></li>
-      <li><a href="https://twitter.com/vuejs" target="_blank" rel="noopener">Twitter</a></li>
-      <li><a href="https://news.vuejs.org" target="_blank" rel="noopener">News</a></li>
-    </ul>
-    <h3>Ecosystem</h3>
-    <ul>
-      <li><a href="https://router.vuejs.org" target="_blank" rel="noopener">vue-router</a></li>
-      <li><a href="https://vuex.vuejs.org" target="_blank" rel="noopener">vuex</a></li>
-      <li><a href="https://github.com/vuejs/vue-devtools#vue-devtools" target="_blank" rel="noopener">vue-devtools</a></li>
-      <li><a href="https://vue-loader.vuejs.org" target="_blank" rel="noopener">vue-loader</a></li>
-      <li><a href="https://github.com/vuejs/awesome-vue" target="_blank" rel="noopener">awesome-vue</a></li>
-    </ul>
-  </div>
-</template>
+<div class="datePickerWrapper">
+   <div class='input-group date' id='datetimepicker2' style="visibility :hidden">
+          <input type='text' class="form-control" />
+          <span class="input-group-addon" >
+            <i class="fa fa-calendar"></i>
+          </span>
+    </div>
+    <div class="pickerHeader">
+            <div class="pickerHeader-title">
+              <div class="picker__title__btn date-picker-title__year">{{value | filterYears}}</div>
+              <transition name ="fade">
+                 <div class="picker__title__btn date-picker-title__date picker__title__btn--active"  ><div>{{filtersDate}}</div></div>
+              </transition>  
+            </div>
+    </div>
+</div>
+
+ </template>
+
 
 <script>
+const jQuery = require("jquery")
+import moment from "moment";
+// import 'bootstrap-vue/dist/bootstrap-vue.css'
+
+// You have to import css yourself
+import "../styles/css/bootstrap.min.css";
+import "../styles/css/bootstrap-datetimepicker.min.css";
+import "../styles/css/bootstrap-datetimepicker-standalone.css";
+import "../styles/css/bootstrap-glyphicons.css";
+import "vue-bootstrap-datetimepicker";
+import "../styles/css/custom.css";
+import {TweenLite} from "gsap"
+import { setTimeout } from 'timers';
+const events = ["hide", "show", "change", "error", "update"];
 export default {
-  name: 'HelloWorld',
+  name: "date-picker",
   props: {
-    msg: String
+    value: {
+      default: null,
+      required: true,
+      validator(value) {
+        return (
+          value === null ||
+          value instanceof Date ||
+          typeof value === "string" ||
+          value instanceof String ||
+          value instanceof moment
+        );
+      }
+    },
+    // http://eonasdan.github.io/bootstrap-datetimepicker/Options/
+    config: {
+      type: Object,
+      default: () => ({
+        format: "YYYY-MM-DD",
+        keepOpen: true
+      })
+    },
+    /**
+     * You can set this to true when component is wrapped in input-group
+     * Note: inline and wrap mode wont work together
+     */
+    wrap: {
+      type: Boolean,
+      default: false
+    }
+  },
+  data() {
+    return {
+      dp: null,
+      // jQuery DOM
+      elem: null,
+      isShowDatePicker: false
+    };
+  },
+  mounted() {
+    // Return early if date-picker is already loaded
+    /* istanbul ignore if */
+    if (this.dp) return;
+    // Handle wrapped input
+    this.elem = jQuery(this.wrap ? this.$el.parentNode : this.$el);
+    // Init date-picker
+    this.elem.datetimepicker(this.config);
+    // Store data control
+    this.dp = this.elem.data("DateTimePicker");
+    // Set initial value
+    this.dp.date(this.value);
+    // Watch for changes
+    this.elem.on("dp.change", this.onChange);
+    // Register remaining events
+    this.registerEvents();
+    this.dp.show()
+    
+  },
+  watch: {
+    /**
+     * Listen to change from outside of component and update DOM 
+     *
+     * @param newValue
+     */
+    value(newValue) {
+      this.dp && this.dp.date(newValue || null);
+      this.$emit("input", newValue)
+    },
+    /**
+     * Watch for any change in options and set them
+     *
+     * @param newConfig Object
+     */
+    config: {
+      deep: true,
+      handler(newConfig) {
+        this.dp && this.dp.options(newConfig);
+      }
+    }
+  },
+  methods: {
+    /**
+     * Update model upon change triggered by date-picker itself
+     *
+     * @param event
+     */
+    onChange(event) {
+      let formattedDate = event.date
+        ? event.date.format(this.dp.format())
+        : null;
+      this.$emit("input", formattedDate);
+    },
+    /**
+     * Emit all available events
+     */
+    registerEvents() {
+      events.forEach(name => {
+        this.elem.on(`dp.${name}`, (...args) => {
+          this.$emit(`dp-${name}`, ...args);
+        });
+      });
+    },
+    clickCalendar() {
+      this.isShowDatePicker = !this.isShowDatePicker;
+      this.isShowDatePicker ? this.dp.show() : this.dp.hide();
+    }
+  },
+  /**
+   * Free up memory
+   */
+  beforeDestroy() {
+    /* istanbul ignore else */
+    if (this.dp) {
+      this.dp.destroy();
+      this.dp = null;
+      this.elem = null;
+    }
+  },
+  filters: {
+   filterYears: function(value){
+     if(!value) return '';
+     return moment(value).format("YYYY")
+   }
+  //  filtersDate: function(value){
+  //    if(!value) return '';
+  //    return moment(value).format('ddd, MMM YY')
+  //  }
+  },
+  computed: {
+    filtersDate(){
+      return  moment(this.value).format('ddd, MMM YY')
+    }
   }
-}
+};
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-h3 {
-  margin: 40px 0 0;
-}
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-a {
-  color: #42b983;
-}
-</style>

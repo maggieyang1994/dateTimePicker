@@ -1,0 +1,201 @@
+// Here you can add other styles
+.sidebar .nav-link.active, .sidebar .navbar .active.dropdown-toggle, .navbar .sidebar .active.dropdown-toggle {
+    // background-color: steelblue !important;
+}
+
+.main {
+    background-color: white;
+}
+
+label {
+    margin-bottom: 0px;
+    font-size: 12px;
+    font-weight: 500;
+    color: #444444;
+    margin-top: 3px;
+    line-height: normal;
+
+}
+
+.col-1, .col-2, .col-3, .col-4, .col-5, .col-6, .col-7, .col-8, .col-9, .col-10, .col-11, .col-12, .col, .col-auto, .col-sm-1, .col-sm-2, .col-sm-3, .col-sm-4, .col-sm-5, .col-sm-6, .col-sm-7, .col-sm-8, .col-sm-9, .col-sm-10, .col-sm-11, .col-sm-12, .col-sm, .col-sm-auto, .col-md-1, .col-md-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6, .col-md-7, .col-md-8, .col-md-9, .col-md-10, .col-md-11, .col-md-12, .col-md, .col-md-auto, .col-lg-1, .col-lg-2, .col-lg-3, .col-lg-4, .col-lg-5, .col-lg-6, .col-lg-7, .col-lg-8, .col-lg-9, .col-lg-10, .col-lg-11, .col-lg-12, .col-lg, .col-lg-auto, .col-xl-1, .col-xl-2, .col-xl-3, .col-xl-4, .col-xl-5, .col-xl-6, .col-xl-7, .col-xl-8, .col-xl-9, .col-xl-10, .col-xl-11, .col-xl-12, .col-xl, .col-xl-auto {
+    padding-left: 8px;
+    padding-right: 8px;
+}
+
+.container-fluid {
+    padding-left: 0px !important;
+    padding-right: 0px !important;
+    padding-top: 40px !important;
+    // background-color: #ECECEC;
+}
+
+.card-header {
+    padding-left: 8px;
+}
+
+.card-body {
+    padding-left: 0px;
+    padding-right: 0px;
+}
+
+.btn {
+    padding-top: 3px;
+    padding-bottom: 5px;
+    line-height: 1.65;
+}
+
+.app-body {
+    margin-top: 0px !important;
+}
+
+.breadcrumb {
+    top: 0px !important;
+}
+
+.main {
+    padding-top: 0px !important;
+}
+
+.sidebar {
+    height: calc(100vh) !important;
+}
+
+.row {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    margin-bottom: 5px !important;
+}
+
+.no-padding {
+    padding: 0;
+}
+
+.app-footer{
+    position: relative;
+    background-color: #0470BA;
+    color: white;
+    flex: 0 0 40px;
+}
+
+.custom-control{
+    min-height: 1.7rem;
+}
+
+@media (min-width: 992px) {
+    .app-header {
+        position: fixed;
+        right: 0 !important;
+        left: 300px !important;
+        width: initial !important;
+        transition: all 0.25s
+    }
+    
+    .sidebar-hidden .app-header {
+        position: fixed;
+        right: 0 !important;
+        left: 0 !important;
+        width: initial !important;
+        transition: all 0.25s
+    }
+}
+
+.modal-header .close{
+    opacity: 1;
+    color: white;
+}
+
+.modal-footer .btn{
+    min-width: 75px;
+}
+
+.sidebarToggleBtn{
+    top: calc(50vh - 40px);
+    // left: 300px;
+    width: 15px;
+    position: fixed;
+    background-color: rgba(4, 112, 186, 0);
+    color: rgba(255,255,255,0.7);
+    height: 100px;
+    z-index: 10;
+}
+
+.sidebarToggleBtn i{
+    margin-top: 40px;
+    color: rgba(0, 0, 0, 0);
+}
+
+.sidebarToggleBtn:hover i {
+    color: rgba(255, 255, 255, 1);
+}
+
+.sidebar:hover ~ .main .sidebarToggleBtn i{
+    color: rgba(255, 255, 255, 1);
+}
+
+.sidebarToggleBtn:hover{
+    background-color: rgba(4, 112, 186 ,0.5);
+    color:white;
+}
+
+.sidebar:hover ~ .main .sidebarToggleBtn{
+    background-color: rgba(4, 112, 186 ,0.5);
+    color:white;
+}
+
+.sidebar-hidden .sidebarToggleBtn {
+    transform: rotate(180deg);
+    left:0px;
+    transition:left .25s;
+}
+body:not(.sidebar-hidden) .sidebarToggleBtn {
+    transform: rotate(0deg);
+    left:300px;
+    transition:left .25s;
+}
+@include media-breakpoint-down(md) {
+    .sidebar-mobile-show .sidebarToggleBtn {
+        transform: rotate(0deg);
+        left:300px;
+        z-index:1019;
+        transition:left .25s;
+    }
+    body:not(.sidebar-mobile-show) .sidebarToggleBtn {
+        transform: rotate(180deg);
+        left:0px;
+        transition:left .25s;
+    }
+}
+
+.noselect {
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+    -khtml-user-select: none; /* Konqueror HTML */
+        -moz-user-select: none; /* Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                supported by Chrome and Opera */
+}
+
+.rais-grid-body {
+    &::-webkit-scrollbar {
+        position: absolute;
+        width: 10px;
+        margin-left: -10px;
+        -webkit-appearance: none;
+    }
+
+    &::-webkit-scrollbar-track {
+        background-color: lighten($sidebar-bg, 5%);
+        border-right: 1px solid darken($sidebar-bg, 5%);
+        border-left: 1px solid darken($sidebar-bg, 5%);
+    }
+
+    &::-webkit-scrollbar-thumb {
+        height: 50px;
+        background-color: darken($sidebar-bg, 10%);
+        background-clip: content-box;
+        border-color: transparent;
+        border-style: solid;
+        border-width: 1px 2px;
+    }
+}
