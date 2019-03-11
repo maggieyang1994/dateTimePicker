@@ -5,7 +5,7 @@
  }
  /* 覆盖 date样式 */
  .bootstrap-datetimepicker-widget.dropdown-menu{
-     top:104px!important;
+     top:116px!important;
      left:14px!important;
      box-shadow:none!important
  }
@@ -89,7 +89,7 @@ div.bootstrap-datetimepicker-widget table td.active{
     align-items: center;
     display: inline-flex;
     font-size: 14px;
-    font-weight: 500;
+    font-weight: 250;
     margin-bottom: 8px;
 }
 .picker__title__btn--active {
@@ -101,7 +101,7 @@ div.bootstrap-datetimepicker-widget table td.active{
 .date-picker-title__date {
     font-size: 34px;
     text-align: left;
-    font-weight: 500;
+    font-weight: 250;
     position: relative;
     overflow: hidden;
     padding-bottom: 8px;
@@ -109,28 +109,34 @@ div.bootstrap-datetimepicker-widget table td.active{
 }
 
 /* 头部的 动画 */
-/* .fade-enter {
-    transform: translate(100%, 0)
+.tab-reverse-transition-enter {
+    transform: translate(0,-25%)
   }
-.fade-leave, .fade-leave-active {
-    position: absolute;
-    top:0
-}
-.fade-leave-to{
-    position:absolute;
-    transform: translate(-100%, 0)
-} */
-
-.fade-enter{
-    transform: translate(0,-100%)
-}
-
-
-.fade-leave,.fade-leave-to{
+.tab-reverse-transition-leave, .tab-reverse-transition-leave-to {
     top: 0;
     position: absolute;
-    transform: translate(0, 100%);
+    transform: translate(0,25%);
 }
+
+
+.tab-transition-enter{
+    transform: translate(0,25%)
+}
+  
+
+.tab-transition-leave, .tab-transition-leave-active{
+    position: absolute;
+    top: 0
+}
+   
+
+.tab-transition-leave-to{
+    position: absolute;
+    transform: translate(0,-25%)
+}
+    
+
+
 
 @keyframes topIn {
     from{

@@ -8,9 +8,9 @@
     </div>
     <div class="pickerHeader">
             <div class="pickerHeader-title">
-              <div class="picker__title__btn date-picker-title__year">{{value | filterYears}}</div>
+              <div class="picker__title__btn date-picker-title__year">{{date | filterYear}}</div>
               <transition name ="fade">
-                 <div class="picker__title__btn date-picker-title__date picker__title__btn--active"  ><div>{{filtersDate}}</div></div>
+                 <div class="picker__title__btn date-picker-title__date picker__title__btn--active"  ><div>{{date | filterDate}}</div></div>
               </transition>  
             </div>
     </div>
@@ -72,7 +72,8 @@ export default {
       dp: null,
       // jQuery DOM
       elem: null,
-      isShowDatePicker: false
+      isShowDatePicker: false,
+      date:this.value
     };
   },
   mounted() {
@@ -103,6 +104,7 @@ export default {
     value(newValue) {
       this.dp && this.dp.date(newValue || null);
       this.$emit("input", newValue)
+      this.date = newValue
     },
     /**
      * Watch for any change in options and set them
@@ -114,6 +116,9 @@ export default {
       handler(newConfig) {
         this.dp && this.dp.options(newConfig);
       }
+    },
+    date(val){
+      debugger;
     }
   },
   methods: {
@@ -126,6 +131,7 @@ export default {
       let formattedDate = event.date
         ? event.date.format(this.dp.format())
         : null;
+      this.date = formattedDate
       this.$emit("input", formattedDate);
     },
     /**
@@ -154,21 +160,17 @@ export default {
       this.elem = null;
     }
   },
-  filters: {
-   filterYears: function(value){
-     if(!value) return '';
-     return moment(value).format("YYYY")
-   }
-  //  filtersDate: function(value){
-  //    if(!value) return '';
-  //    return moment(value).format('ddd, MMM YY')
-  //  }
-  },
-  computed: {
-    filtersDate(){
-      return  moment(this.value).format('ddd, MMM YY')
+  filters:{
+    filterDate: function(date){
+      if(!date) return ''
+      return moment(date).format('ddd, MMM DD')
+    },
+    filterYear: function(date){
+      if(!date) return ''
+      return moment(date).format('YYYY')
     }
   }
+  
 };
 </script>
 

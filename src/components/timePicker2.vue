@@ -45,6 +45,7 @@
   </div>
 </template>
 <script>
+import moment from 'moment'
 export default {
   props: {
     value: {
@@ -60,10 +61,10 @@ export default {
       this.time = (this.isAm ? val : (val * 1 + 12 === 24 ? '00': val * 1 + 12)) + ":" + this.minutes;
     },
     minutes(val) {
-      this.time = this.hour + ":" + (String(val).length === 1 ? "0" + val : val);
+      this.time = this.hour + ":" + val;
     },
     time(val){
-      this.$emit("input", val)
+      this.$emit("input", moment("2012-12-12 " + val).format("HH:mm"))
     }
   },
   data() {
@@ -91,7 +92,7 @@ export default {
       let styleObj = {};
       styleObj.transform = `rotate(${360 - i * 30}deg)`;
       if (
-        (this.mode === "hour" && i === this.hour * 1) ||
+        (this.mode === "hour" && (i === this.hour * 1 || i === this.hour - 12)) ||
         (this.mode === "minutes" && (i * 5) % 60 === this.minutes * 1)
       ) {
         (styleObj.backgroundColor = "#1867c0"), (styleObj.color = "white");
@@ -192,7 +193,7 @@ export default {
 
 .picker-body {
   /* border: 1px solid red; */
-  padding-bottom: 16px;
+  padding-bottom: 17px;
   width: 100%;
   height: auto;
   overflow: hidden;
@@ -277,6 +278,9 @@ export default {
   display: inline-block;
   margin-left: -16px;
   border-radius: 50%;
+}
+.v-picker__title__btn{
+  cursor: pointer
 }
 </style>
 
