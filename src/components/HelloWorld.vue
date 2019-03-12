@@ -31,14 +31,12 @@ import "../styles/css/bootstrap-datetimepicker-standalone.css";
 import "../styles/css/bootstrap-glyphicons.css";
 import "vue-bootstrap-datetimepicker";
 import "../styles/css/custom.css";
-import {TweenLite} from "gsap"
-import { setTimeout } from 'timers';
 const events = ["hide", "show", "change", "error", "update"];
 export default {
   name: "date-picker",
   props: {
     value: {
-      default: null,
+      default: moment().format("YYYY-MM-DD"),
       required: true,
       validator(value) {
         return (
@@ -116,9 +114,6 @@ export default {
       handler(newConfig) {
         this.dp && this.dp.options(newConfig);
       }
-    },
-    date(val){
-      debugger;
     }
   },
   methods: {

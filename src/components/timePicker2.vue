@@ -28,7 +28,7 @@
           @click="handlerClick($event)"
           @mousedown="draggeble = true"
           @mousemove="draggeble && handlerClick($event)"
-          @mouseup="draggeble = false"
+          @mouseup="onMouseUp($event)"
         >
           <div class="time-picker-clock__hand primary" :style="{transform:`rotate(${deg}deg)`}"></div>
           <div>
@@ -118,6 +118,16 @@ export default {
       } else {
         num = Math.round(num / 6);
         this.minutes = num === 60 || num === 0 ? "00" : num;
+      }
+    },
+    onMouseUp(e){
+      this.draggeble = false;
+      if(this.mode === 'minutes') {
+        this.handlerClick(e);
+        setTimeout(() => {
+           this.$emit('closePicker')
+        }, 300)
+       
       }
     },
     angle(center, p1) {

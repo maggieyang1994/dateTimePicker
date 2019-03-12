@@ -16,7 +16,16 @@ div.bootstrap-datetimepicker-widget table td.day{
     border-radius:50%;
 }
 
-
+/* 覆蓋year樣式 */
+.datePickerWrapper .datepicker-months span,.datePickerWrapper .datepicker-years span{
+    width:62px
+ }
+ .datePickerWrapper .datepicker-months,.datePickerWrapper .datepicker-years{
+     padding-bottom:4px
+ }
+ .datePickerWrapper .datepicker-decades{
+    padding-bottom:23px
+ }
 
 
 div.bootstrap-datetimepicker-widget table td.today{
