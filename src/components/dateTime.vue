@@ -1,16 +1,18 @@
 <template>
   <div id="app">
-     <div class="wrapper">
+     <div class="wrapper" v-if="(aspect.visible || false)">
         <div class='col-sm-6'>
             <div class="form-group" >
             <div class='input-group date' id='datetimepicker2' >
                 <input type='text' 
                 @blur = "onBlur($event)"
                 class="form-control"
+                :disabled="!aspect.enable" 
+                :readonly="!aspect.editable" 
                 v-model ="dateTime"
                 :class="inputClass"/>
-                <span class="input-group-addon" @click="handlerClick($event)">
-                <i class="fa fa-calendar"></i>
+                <span class="input-group-addon" @click="handlerClick($event)" :disabled="!aspect.clickable">
+                    <i class="fa fa-calendar"></i>
                 </span>
             </div>
             
@@ -109,23 +111,21 @@ export default {
         if(this.type === 'dateTime'){
             if (val.indexOf(" ") === -1) {
                 this.isError = true;
-                this.oldV = oldV;
+                moment(oldV).isValid() && (this.oldV = oldV);
             } else {
                 this.date = val.split(" ")[0];
                 this.time = val.split(" ")[1];
-                !moment(val).isValid() && (this.oldV = oldV);
-                this.isError = !moment(val).isValid();
+                this.updateDateTime(val, oldV)
             }
         }
         else if(this.type === 'date'){
-             !moment(val).isValid() && (this.oldV = oldV);
-             this.isError = !moment(val).isValid();
+            this.updateDateTime(val, oldV)
         }else{
-           !moment('2012-12-12 ' + val).isValid() && (this.oldV = oldV);
-            this.isError = !moment('2012-12-12 ' + val).isValid(); 
+          this.updateDateTime('2012-12-12 ' + val, oldV)
         }
         
       }
+      this.$emit('input', this.dateTime)
     }
   },
   mounted() {
@@ -146,18 +146,25 @@ export default {
         this.dateTime = moment(this.isError ? (this.type === 'time' ?'2012-12-12 ' + this.oldV : this.oldV) : (this.type==='time' ? '2012-12-12 ' + this.dateTime: this.dateTime)).format(this.format);
     },
     handlerClick() {
-      // 只能同时打开一个
-      let dom = document.querySelector(".dateTimePicker");
-      dom && (dom.style.display = "none");
-      this.isShowPicker = !this.isShowPicker;
-      //  如果datetimePikcer的左边距 加上  datetimePicker的宽度  大于  可视区的宽度 并且 可视区的宽度  大于  datetimePicker的宽度
-      // 则显示在左边
-      // let pickerLeft = document.querySelector(".wrapper").offsetLeft;
-      // let pickerWidth = document.querySelector(".datePickerWrapper").offsetWidth + document.querySelector(".timeWrapper").offsetWidth
-      // let clientWidth = document.body.clientWidth;
-      // if(clientWidth > pickerWidth && pickerWidth + pickerLeft > clientWidth){
-      //   console.log("在左边")
-      // }
+      if(this.aspect.editable && this.aspect.enable){
+          // 只能同时打开一个
+        let dom = document.querySelector(".dateTimePicker");
+        dom && (dom.style.display = "none");
+        this.isShowPicker = !this.isShowPicker;
+        //  如果datetimePikcer的左边距 加上  datetimePicker的宽度  大于  可视区的宽度 并且 可视区的宽度  大于  datetimePicker的宽度
+        // 则显示在左边
+        // let pickerLeft = document.querySelector(".wrapper").offsetLeft;
+        // let pickerWidth = document.querySelector(".datePickerWrapper").offsetWidth + document.querySelector(".timeWrapper").offsetWidth
+        // let clientWidth = document.body.clientWidth;
+        // if(clientWidth > pickerWidth && pickerWidth + pickerLeft > clientWidth){
+        //   console.log("在左边")
+        // }
+      }
+      
+    },
+    updateDateTime(val, oldV){
+      !moment(val).isValid() && (moment(this.type === 'time' ?'2012-12-12 ' + oldV : oldV).isValid() && (this.oldV = oldV));
+      this.isError = !moment(val).isValid();
     }
   }
 };
@@ -177,4 +184,7 @@ export default {
     left :15px;
     top:-11px
 }
+ /* input.form-control[readonly] {
+    background-color: #fafafa;
+  } */
 </style>

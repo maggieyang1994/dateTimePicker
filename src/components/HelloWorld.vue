@@ -36,7 +36,7 @@ export default {
   name: "date-picker",
   props: {
     value: {
-      default: moment().format("YYYY-MM-DD"),
+      default: null,
       required: true,
       validator(value) {
         return (
@@ -157,12 +157,14 @@ export default {
   },
   filters:{
     filterDate: function(date){
-      if(!date) return ''
-      return moment(date).format('ddd, MMM DD')
+      // if(!date) return '';
+      // return moment(date).format('ddd, MMM DD')
+      return moment(date ? date :moment()).format('ddd, MMM DD')
     },
     filterYear: function(date){
-      if(!date) return ''
-      return moment(date).format('YYYY')
+      // if(!date) return '';
+      // return moment(date).format('YYYY')
+      return moment(date ? date :moment()).format('YYYY')
     }
   }
   
