@@ -126,7 +126,7 @@ export default {
         this.handlerClick(e);
         setTimeout(() => {
            this.$emit('closePicker')
-        }, 300)
+        }, 0)
        
       }
     },

@@ -20,14 +20,20 @@ export default {
            list: [{a:1,b:2}]
        }
    },
+   //  如果要给data新加一个属性   可以直接修改data　　不能直接改computed
    computed:{
        computedList(){
            // 如果这里是深拷贝  无论a还是b的改变都触发不了 list的改变
          // 浅拷贝
-         this.list.forEach(x => x.c = false);
-         return this.list
+        //  this.list.forEach(x => x.c = false);
+        console.log("computedList")
+        // 如果后面要给已经存在的data 加一个属性   必须要 用VUE.set   如果不用vue检测不到list的变化 ---------》不如直接改变data
+        this.list.forEach((x,index) => {
+            Vue.set(this.list[index],"c",false)
+        })
+         return JSON.parse(JSON.stringify(this.list))
        }
-   },
+   }, 
    methods:{
        handleClick(item, key){
             // 之所以改a就会触发computedList 是因为 改变了list  然后computedList就改变了
@@ -36,13 +42,32 @@ export default {
                 // item.c = !item.c;
             // Vue.set(this.computedList[key], "c", !item.c)
             
-
-            item.c = !item.c;
+            // var list = JSON.parse(JSON.stringify(this.list));
+            // list[key].c = !item.c;
+            // this.list = list
+            Vue.set(this.list[key], "c", !item.c)
+            //  item.c = !item.c;
             console.log(this.list);
             console.log(this.computedList)
           
 
         }
+   },
+   watch:{
+       "list": {
+           handler:function(newVal, oldVal){
+               console.log("newV", newVal)
+                console.log("oldV", oldVal)
+           },
+           deep:true
+       },
+       "computedList": {
+           handler:function(newVal, oldVal){
+               console.log("newV", newVal)
+                console.log("oldV", oldVal)
+           },
+           deep:true
+       }
    }
 }
 </script>

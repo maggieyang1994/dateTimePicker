@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-     <!-- <div>
+     <div>
        {{time}}
        <dateTime v-model = "time" type="time" :aspect="a1"/>
      </div>
@@ -11,8 +11,8 @@
       <div style="position:absolute;left:1200px">
         {{time2}}
        <dateTime v-model = "time2" type="dateTime" :aspect="a1"/>
-     </div> -->
-     <arrayCopy/>
+     </div>
+     <!-- <arrayCopy/> -->
   </div>
 </template>
 

@@ -24,11 +24,11 @@
         <time-picker2 v-model ="time"/>
         </div> 
         <div class="dateTimePicker" v-if="!isError && isShowPicker && type === 'date'">
-        <HelloWorld v-model="dateTime"/>
+        <HelloWorld v-model="dateTime" @closePicker="isShowPicker=false"/>
        
         </div> 
         <div class="dateTimePicker" v-if="!isError && isShowPicker && type === 'time'">
-            <time-picker2 v-model ="dateTime" class ="typeTime"/>
+            <time-picker2 v-model ="dateTime" class ="typeTime" @closePicker="isShowPicker=false"/>
         </div> 
     </div>
     

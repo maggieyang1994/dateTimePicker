@@ -102,7 +102,10 @@ export default {
     value(newValue) {
       this.dp && this.dp.date(newValue || null);
       this.$emit("input", newValue)
-      this.date = newValue
+      this.date = newValue;
+      setTimeout(() => {
+        this.$emit("closePicker")
+      }, 0)
     },
     /**
      * Watch for any change in options and set them
