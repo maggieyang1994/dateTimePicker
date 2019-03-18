@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-     <div>
+     <!-- <div>
        {{time}}
        <dateTime v-model = "time" type="time" :aspect="a1"/>
      </div>
@@ -11,8 +11,9 @@
       <div style="position:absolute;left:1200px">
         {{time2}}
        <dateTime v-model = "time2" type="dateTime" :aspect="a1"/>
-     </div>
+     </div> -->
      <!-- <arrayCopy/> -->
+      <table1/>
   </div>
 </template>
 
@@ -24,10 +25,12 @@
 import moment from "moment";
 import dateTime from "./components/dateTime.vue";
 import arrayCopy from "./components/arrayCopy.vue";
+import table1 from "./components/table.vue";
 export default {
   components: {
     dateTime,
-    arrayCopy
+    arrayCopy,
+    table1
  },
  computed:{
    a1(){
