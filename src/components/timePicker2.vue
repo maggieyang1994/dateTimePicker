@@ -123,10 +123,9 @@ export default {
     onMouseUp(e){
       this.draggeble = false;
       if(this.mode === 'minutes') {
-        this.handlerClick(e);
         setTimeout(() => {
            this.$emit('closePicker')
-        }, 0)
+        }, 30)
        
       }
     },
